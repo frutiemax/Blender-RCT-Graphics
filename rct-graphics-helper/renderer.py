@@ -94,13 +94,19 @@ class Renderer:
         if self.render_finished_callback != None:
             self.render_finished_callback()
 
+    def set_aa(self, aa):
+        if aa == True:
+            bpy.context.scene.cycles.samples = 256
+        else:
+            bpy.context.scene.cycles.samples = 1
+
     def _render_reset(self, _=None):
         if not self.rendering:
             return
 
         self.rendering = False
 
-        #self.set_aa(self.started_with_anti_aliasing)
+        self.set_aa(self.started_with_anti_aliasing)
         self.set_aa_with_background(False)
         self.set_override_material(None)
         self.set_layer("Editor")

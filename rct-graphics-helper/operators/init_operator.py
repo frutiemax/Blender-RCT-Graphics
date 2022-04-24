@@ -66,6 +66,12 @@ class Init(bpy.types.Operator):
 
         self.delete_default_render_layer(context)
 
+        #set the render engine to cycles as eevee does not support the material index in compositor mode
+        context.scene.render.engine = 'CYCLES'
+
+        #set the view transform to standard as filmic is the standard
+        context.scene.view_settings.view_transform = 'Standard'
+
         # Create dependencies in the context
         sceneBuilder = SceneBuilder()
         sceneBuilder.build(context)

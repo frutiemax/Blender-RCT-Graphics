@@ -35,7 +35,7 @@ class RenderProcessor(FrameProcessor):
 
         self.renderer.set_override_material(None)
 
-        #self.renderer.set_aa(frame.use_anti_aliasing)
+        self.renderer.set_aa(frame.use_anti_aliasing)
         self.renderer.set_aa_with_background(frame.anti_alias_with_background)
 
         self.renderer.set_animation_frame(frame.animation_frame_index)
@@ -45,7 +45,7 @@ class RenderProcessor(FrameProcessor):
         # Render a meta image without anti-aliasing that we can use as a mask for the alpha later
         # We can skip this step if the image is oversized as that will already render an un-aliased tile-index image
         if frame.maintain_aliased_silhouette and not frame.oversized:
-            #self.renderer.set_aa(False)
+            self.renderer.set_aa(False)
             self.renderer.set_layer(frame.layer)
 
             naa_meta_render_output = frame.get_meta_render_output_file_name(

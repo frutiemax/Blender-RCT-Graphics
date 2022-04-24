@@ -113,7 +113,7 @@ class CompositorBuilder(NodesBuilder):
         map_range_node.inputs[3].default_value = 0
         map_range_node.inputs[4].default_value = 1
 
-        self.link(layers_node, 15, map_range_node, 0)
+        self.link(layers_node, 3, map_range_node, 0)
 
         alpha_convert_node = self.create_node("CompositorNodePremulKey")
         alpha_convert_node.mapping = "PREMUL_TO_STRAIGHT"
@@ -125,7 +125,6 @@ class CompositorBuilder(NodesBuilder):
         seperate_rgba_node = self.create_node("CompositorNodeSepRGBA")
 
         self.link(alpha_convert_node, 0, seperate_rgba_node, 0)
-        self.link(seperate_rgba_node, 0, map_range_node, 0)
 
         self.start_branch_point()
 
