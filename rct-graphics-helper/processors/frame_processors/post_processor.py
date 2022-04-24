@@ -60,18 +60,18 @@ class PostProcessor(FrameProcessor):
 
             if i == 0:
                 # Replace our clover green recolor 1 with the OpenRCT2 orange recolor 1
-                forced_color_render.replace_color("#003F21", "#6F332F")
-                forced_color_render.replace_color("#00672F", "#83372F")
-                forced_color_render.replace_color("#0B7B41", "#973F33")
-                forced_color_render.replace_color("#178F51", "#AB4333")
-                forced_color_render.replace_color("#1FA35C", "#BF4B2F")
-                forced_color_render.replace_color("#27B768", "#D34F2B")
-                forced_color_render.replace_color("#3BDB7F", "#E75723")
-                forced_color_render.replace_color("#5BEF98", "#FF5F1F")
-                forced_color_render.replace_color("#77F3A9", "#FF7F27")
-                forced_color_render.replace_color("#97F7BE", "#FF9B33")
-                forced_color_render.replace_color("#B7FBD0", "#FFB73F")
-                forced_color_render.replace_color("#D7FFE5", "#FFCF4B")
+                forced_color_render.replace_color("#003F21", "#6F332F") # 0, 63, 33
+                forced_color_render.replace_color("#00672F", "#83372F") # 0, 103, 47
+                forced_color_render.replace_color("#0B7B41", "#973F33") # 11, 123, 65
+                forced_color_render.replace_color("#178F51", "#AB4333") # 23, 143, 81
+                forced_color_render.replace_color("#1FA35C", "#BF4B2F") # 31, 163, 92
+                forced_color_render.replace_color("#27B768", "#D34F2B") # 39, 183, 104
+                forced_color_render.replace_color("#3BDB7F", "#E75723") # 59, 219, 127
+                forced_color_render.replace_color("#5BEF98", "#FF5F1F") # 91, 239, 152
+                forced_color_render.replace_color("#77F3A9", "#FF7F27") # 119, 243, 169
+                forced_color_render.replace_color("#97F7BE", "#FF9B33") # 151, 247, 190
+                forced_color_render.replace_color("#B7FBD0", "#FFB73F") # 183, 251, 208
+                forced_color_render.replace_color("#D7FFE5", "#FFCF4B") # 215, 255, 229
 
             magick_command.mask_mix(forced_color_render, mask)
 
@@ -164,7 +164,7 @@ class PostProcessor(FrameProcessor):
         output.index = output_index
         output.path = output_path
 
-        if result[2:][:-1] is not "":
+        if result[2:][:-1] != "":
             offset_coords = result[2:][:-1].split(" ")
             output.offset_x = int(round(float(offset_coords[0])))
             output.offset_y = int(round(float(offset_coords[1]))) + 15

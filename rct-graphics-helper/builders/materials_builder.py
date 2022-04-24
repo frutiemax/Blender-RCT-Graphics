@@ -9,6 +9,7 @@ RCT Graphics Helper is licensed under the GNU General Public License version 3.
 
 import bpy
 import math
+import mathutils
 
 from .nodes_builder import NodesBuilder
 
@@ -25,20 +26,20 @@ class MaterialsBuilder(NodesBuilder):
     def build(self, context):
         self.create_world_position_material(context)
 
-        self.create_recolorable_material("Recolorable 1", (0.1, 0.9, 0.3), 1)
-        self.create_recolorable_material("Recolorable 2", (0.9, 0.1, 0.4), 2)
-        self.create_recolorable_material("Recolorable 3", (0.9, 0.6, 0), 3)
+        self.create_recolorable_material("Recolorable 1", (0.1, 0.9, 0.3, 1.0), 1)
+        self.create_recolorable_material("Recolorable 2", (0.9, 0.1, 0.4, 1.0), 2)
+        self.create_recolorable_material("Recolorable 3", (0.9, 0.6, 0, 1.0), 3)
 
     def create_recolorable_material(self, name, color, pass_index):
         material = self.create_material(name)
 
         material.diffuse_color = color
-        material.diffuse_intensity = 1
+        #material.diffuse_intensity = 1
 
         material.specular_color = (1, 1, 1)
         material.specular_intensity = 1
-        material.specular_hardness = 25
-        material.specular_shader = "PHONG"
+        #material.specular_hardness = 25
+        #material.specular_shader = "PHONG"
 
         material.pass_index = pass_index
 
@@ -51,23 +52,26 @@ class MaterialsBuilder(NodesBuilder):
 
         self.init(material.node_tree)
 
-        input_node = self.create_node("ShaderNodeGeometry")
+        #input_node = self.create_node("ShaderNodeGeometry")
+        input_node = self.create_node("ShaderNodeObjectInfo")
 
         self.next_column()
 
         mapping_node = self.create_node("ShaderNodeMapping")
-        mapping_node.translation = (8, 8, 0)
-        mapping_node.scale = (0.25, 0.25, 0.25)
-        mapping_node.use_min = True
-        mapping_node.use_max = True
-        mapping_node.min = (0, 0, 0)
-        mapping_node.max = (16, 16, 16)
+        mapping_node.vector_type = 'POINT'
+        test = mapping_node.inputs['Location']
+        mapping_node.inputs['Location'].default_value = mathutils.Vector((8, 8, 0))
+        mapping_node.inputs['Scale'].default_value = mathutils.Vector((0.25, 0.25, 0.25))
+        #mapping_node.use_min = True
+        #mapping_node.use_max = True
+        #mapping_node.min = (0, 0, 0)
+        #mapping_node.max = (16, 16, 16)
 
         self.link(input_node, 0, mapping_node, 0)
 
         self.next_column()
 
-        output_node = self.create_node("ShaderNodeOutput")
+        output_node = self.create_node("ShaderNodeOutputMaterial")
 
         self.link(mapping_node, 0, output_node, 0)
 

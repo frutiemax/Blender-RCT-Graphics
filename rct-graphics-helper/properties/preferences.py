@@ -14,7 +14,7 @@ from bpy.types import AddonPreferences
 class RCTGraphicsHelperPreferences(AddonPreferences):
     bl_idname = "rct-graphics-helper"
 
-    orct2_object_directory = bpy.props.StringProperty(
+    orct2_object_directory: bpy.props.StringProperty(
         name="OpenRCT2 Object Folder",
         description="Directory to copy the .parkobj file to.",
         maxlen=1024,

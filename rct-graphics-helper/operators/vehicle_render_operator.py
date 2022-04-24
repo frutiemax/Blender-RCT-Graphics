@@ -25,7 +25,7 @@ class RenderVehicle(RCTRender, bpy.types.Operator):
 
         self.task_builder.clear()
         self.task_builder.set_anti_aliasing_with_background(
-            context.scene.render.use_antialiasing, general_props.anti_alias_with_background, general_props.maintain_aliased_silhouette)
+            True, general_props.anti_alias_with_background, general_props.maintain_aliased_silhouette)
         self.task_builder.set_output_index(general_props.out_start_index)
         self.task_builder.set_size(1, 1)
 
@@ -108,14 +108,14 @@ class RenderVehicle(RCTRender, bpy.types.Operator):
                     if track_section[0]:
                         base_view_angle = 45
                     self.task_builder.set_rotation(
-                        base_view_angle, -track_section[3] + extra_roll, track_section[2], track_section[4])
+                        base_view_angle, -track_section[3] - extra_roll, track_section[2], track_section[4])
 
                     if key == "VEHICLE_SPRITE_FLAG_RESTRAINT_ANIMATION":
                         for j in range(3):
                             for k in range(track_section[1]):
                                 for l in range(animation_frames):
                                     self.task_builder.set_rotation(
-                                        base_view_angle + k / track_section[1] * 360, -track_section[3] + extra_roll, track_section[2], track_section[4])
+                                        base_view_angle + k / track_section[1] * 360, -track_section[3] - extra_roll, track_section[2], track_section[4])
                                     self.task_builder.add_viewing_angles(
                                         1, animation_frames + j, 1)
                     else:

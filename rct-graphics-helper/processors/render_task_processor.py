@@ -263,10 +263,10 @@ class RenderTaskProcessor:
         if not copy_to_objects:
             return
 
-        addon_prefs = task.context.user_preferences.addons["rct-graphics-helper"].preferences
+        addon_prefs = task.context.preferences.addons["rct-graphics-helper"].preferences
 
         target_dir = os.path.abspath(bpy.path.abspath(
-            addon_prefs.orct2_object_directory))
+            addon_prefs.object_path))
         if not os.path.exists(target_dir):
             print(target_dir + " is not an existing directory.")
             return

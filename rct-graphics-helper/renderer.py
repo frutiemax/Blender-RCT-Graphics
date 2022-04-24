@@ -38,7 +38,7 @@ class Renderer:
         self.context = context
 
         self.magick_path = "magick"
-        self.floyd_steinberg_diffusion = 5
+        self.floyd_steinberg_diffusion = 0
 
         self.palette_manager = palette_manager
 
@@ -51,14 +51,14 @@ class Renderer:
         if self.world_position_material == None:
             materials_builder = MaterialsBuilder()
             materials_builder.create_world_position_material(context)
-            self.world_position_material = find_material_by_name(
-                "WorldPosition")
+            self.world_position_material = find_material_by_name("WorldPosition")
 
         self.lens_shift_y_offset = round(bpy.data.cameras["Camera"].shift_y *
                                          context.scene.render.resolution_x)
 
-        self.started_with_anti_aliasing = context.scene.render.use_antialiasing
-        context.scene.render.use_shadows = context.scene.rct_graphics_helper_general_properties.cast_shadows
+        #self.started_with_anti_aliasing = context.scene.render.use_antialiasing
+        self.started_with_anti_aliasing = True
+        #context.scene.render.use_shadows = context.scene.rct_graphics_helper_general_properties.cast_shadows
 
         bpy.app.handlers.render_complete.append(self._render_finished)
         bpy.app.handlers.render_cancel.append(self._render_reset)
@@ -100,7 +100,7 @@ class Renderer:
 
         self.rendering = False
 
-        self.set_aa(self.started_with_anti_aliasing)
+        #self.set_aa(self.started_with_anti_aliasing)
         self.set_aa_with_background(False)
         self.set_override_material(None)
         self.set_layer("Editor")
@@ -119,8 +119,8 @@ class Renderer:
         return palette.path
 
     # Enabled or disables anti-aliasing for the next render
-    def set_aa(self, aa):
-        self.context.scene.render.use_antialiasing = aa
+    #def set_aa(self, aa):
+        #self.context.scene.render.use_antialiasing = aa
 
     # Enabled or disables anti-aliasing with the background
     def set_aa_with_background(self, aa_with_background):
@@ -138,9 +138,9 @@ class Renderer:
 
     # Sets the global override material that the scene is rendered with
     def set_override_material(self, material):
-        self.context.scene.render.layers["Editor"].material_override = material
+        self.context.scene.view_layers["Editor"].material_override = material
         for i in range(8):
-            self.context.scene.render.layers["Riders {}".format(
+            self.context.scene.view_layers["Riders {}".format(
                 i + 1)].material_override = material
 
     # Sets the active render layer
@@ -149,8 +149,9 @@ class Renderer:
         for i in range(8):
             layers.append("Riders {}".format(i + 1))
         for layer in layers:
-            self.context.scene.render.layers[layer].use = False
-        self.context.scene.render.layers[layer_name].use = True
+            self.context.scene.view_layers[layer].use = False
+        self.context.scene.view_layers[layer_name].use = True
+        self.context.window.view_layer = self.context.scene.view_layers[layer_name]
 
         input_layer_node = find_node_by_label(
             self.context.scene.node_tree, "input_layer")

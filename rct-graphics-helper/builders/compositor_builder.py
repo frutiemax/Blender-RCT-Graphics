@@ -125,6 +125,7 @@ class CompositorBuilder(NodesBuilder):
         seperate_rgba_node = self.create_node("CompositorNodeSepRGBA")
 
         self.link(alpha_convert_node, 0, seperate_rgba_node, 0)
+        self.link(seperate_rgba_node, 0, map_range_node, 0)
 
         self.start_branch_point()
 

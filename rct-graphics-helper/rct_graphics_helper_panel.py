@@ -46,7 +46,7 @@ class GraphicsHelperPanel(bpy.types.Panel):
         row.separator()
 
         row = layout.row()
-        row.label("General:")
+        row.label(text="General:")
 
         row = layout.row()
         row.prop(properties, "output_directory")
@@ -81,14 +81,14 @@ class GraphicsHelperPanel(bpy.types.Panel):
         row.separator()
 
         row = layout.row()
-        row.label("Dither Palette:")
+        row.label(text="Dither Palette:")
 
         row = layout.row()
         row.prop(properties, "palette", text="")
 
         if properties.palette == "CUSTOM":
             box = layout.box()
-            split = box.split(.50)
+            split = box.split(factor=.50)
             columns = [split.column(), split.column()]
             i = 0
             for color in palette_colors:
@@ -98,7 +98,7 @@ class GraphicsHelperPanel(bpy.types.Panel):
                 i += 1
 
         row = layout.row()
-        row.label("Object Type:")
+        row.label(text="Object Type:")
 
         row = layout.row()
         row.prop(properties, "render_mode", text="")
@@ -150,9 +150,9 @@ class GraphicsHelperPanel(bpy.types.Panel):
         box = layout.box()
 
         row = box.row()
-        row.label("Ride Vehicle Track Properties:")
+        row.label(text="Ride Vehicle Track Properties:")
 
-        split = box.split(.50)
+        split = box.split(factor=.50)
         columns = [split.column(), split.column()]
         i = 0
         for sprite_track_flagset in properties.sprite_track_flags_list:

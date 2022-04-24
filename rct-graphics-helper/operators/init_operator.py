@@ -34,29 +34,34 @@ class Init(bpy.types.Operator):
         context.scene.render.image_settings.color_depth = "8"
         context.scene.render.image_settings.compression = 0
         context.scene.render.image_settings.color_mode = "RGBA"
-        context.scene.render.alpha_mode = "TRANSPARENT"
 
         # Anti-aliasing
-        context.scene.render.use_antialiasing = True
-        context.scene.render.pixel_filter_type = "BOX"
-        context.scene.render.antialiasing_samples = "5"
+        #context.scene.render.use_antialiasing = True
+        #context.scene.render.pixel_filter_type = "BOX"
+        #context.scene.render.antialiasing_samples = "8"
+        #context.scene.render.filter_size = 1.4
+        context.scene.render.film_transparent = True
         context.scene.render.filter_size = 1.4
 
         # Create render layers
         editor_layer = self.create_render_layer(context, "Editor")
-        editor_layer.layers = (True, False, False, True, True, True, True, True,
-                               True, True, True, True, True, True, True, True, True, True, True, True)
-        editor_layer.layers_zmask = (True, False, False, False, False, False, False, False,
-                                     False, False, False, False, False, False, False, False, False, False, False, False)
+
+        #set visible layers
+        #editor_layer.layers = (True, False, False, True, True, True, True, True,
+                               #True, True, True, True, True, True, True, True, True, True, True, True)
+
+        #
+        #editor_layer.layers_zmask = (True, False, False, False, False, False, False, False,
+                                     #False, False, False, False, False, False, False, False, False, False, False, False)
         editor_layer.use = True
 
         for i in range(8):
             riders_layer = self.create_render_layer(
                 context, "Riders {}".format(i + 1))
-            riders_layer.layers = (False, i == 0, i == 1, i == 2, i == 3, i == 4, i == 5, i == 6,
-                                   i == 7, False, False, False, False, False, False, False, False, False, False, False)
-            riders_layer.layers_zmask = (True, True, True, True, True, True, True, True, True,
-                                         True, False, False, False, False, False, False, False, False, False, False)
+            #riders_layer.layers = (False, i == 0, i == 1, i == 2, i == 3, i == 4, i == 5, i == 6,
+                                   #i == 7, False, False, False, False, False, False, False, False, False, False, False)
+            #riders_layer.layers_zmask = (True, True, True, True, True, True, True, True, True,
+                                         #True, False, False, False, False, False, False, False, False, False, False)
             riders_layer.use = False
 
         self.delete_default_render_layer(context)
@@ -74,21 +79,23 @@ class Init(bpy.types.Operator):
         return {'FINISHED'}
 
     def delete_default_render_layer(self, context):
-        layer = context.scene.render.layers.get("RenderLayer")
+        layer = context.scene.view_layers.get("RenderLayer")
 
         if layer != None:
-            context.scene.render.layers.remove(layer)
+            context.scene.view_layers.remove(layer)
 
     def create_render_layer(self, context, name):
-        old_layer = context.scene.render.layers.get(name)
+        #old_layer = context.scene.render.layers.get(name)
+        old_layer = context.scene.view_layers.get(name)
 
         if old_layer != None:
-            context.scene.render.layers.remove(old_layer)
+            context.scene.view_layers.remove(old_layer)
 
-        layer = context.scene.render.layers.new(name)
+        #layer = context.scene.render.layers.new(name)
+        layer = context.scene.view_layers.new(name)
 
         layer.use_pass_combined = True
         layer.use_pass_material_index = True
-        layer.use_zmask = True
+        layer.use_pass_z = True
 
         return layer

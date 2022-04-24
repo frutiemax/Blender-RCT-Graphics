@@ -85,18 +85,18 @@ class VehicleProperties(bpy.types.PropertyGroup):
     for sprite_track_flag in sprite_track_flags_list:
         defaults.append(sprite_track_flag.default_value)
 
-    sprite_track_flags = bpy.props.BoolVectorProperty(
+    sprite_track_flags: bpy.props.BoolVectorProperty(
         name="Track Pieces",
         default=defaults,
         description="Which track pieces to render sprites for",
         size=len(sprite_track_flags_list))
 
-    restraint_animation = bpy.props.BoolProperty(
+    restraint_animation: bpy.props.BoolProperty(
         name="Restraint Animation",
         description="Render with restraint animation. The restrain animation is 3 frames long and starts at frame 1",
         default=False)
 
-    inverted_set = bpy.props.BoolProperty(
+    inverted_set: bpy.props.BoolProperty(
         name="Inverted Set",
         description="Used for rides which can invert for an extended amount of time like the flying and lay-down rollercoasters",
         default=False)

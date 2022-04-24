@@ -17,18 +17,18 @@ from ..operators.render_operator import RCTRender
 
 
 class TilesProperties(bpy.types.PropertyGroup):
-    viewing_angles = bpy.props.IntProperty(
+    viewing_angles: bpy.props.IntProperty(
         name="Viewing Angles",
         description="Number of viewing angles to render for",
         default=4,
         min=1)
 
-    object_width = bpy.props.IntProperty(
+    object_width: bpy.props.IntProperty(
         name="Object Width",
         description="Width of the object in tiles. Only used for large scenery",
         default=1,
         min=1)
-    object_length = bpy.props.IntProperty(
+    object_length: bpy.props.IntProperty(
         name="Object Length",
         description="Length of the object in tiles. Only used for large scenery",
         default=1,
