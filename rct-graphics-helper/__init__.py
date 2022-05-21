@@ -18,10 +18,13 @@ from .properties.general_properties import register_general_properties, unregist
 from .rct_graphics_helper_panel import GraphicsHelperPanel
 from .operators.init_operator import Init
 from .operators.render_tiles_operator import RenderTiles
+from .operators.walls_render_operator import RenderWalls
 from .operators.vehicle_render_operator import RenderVehicle
 from .properties.general_properties import GeneralProperties
 from .properties.tiles_properties import TilesProperties
 from .properties.vehicle_properties import VehicleProperties
+from .properties.walls_properties import WallsProperties
+
 
 from . import developer_utils
 import importlib
@@ -47,17 +50,20 @@ modules = developer_utils.setup_addon_modules(
 #addon preferences
 class RCTGraphicsHhelperPreferences(bpy.types.AddonPreferences):
     bl_idname = __name__
-    object_path: bpy.props.StringProperty(name="Path:", subtype='FILE_PATH')
+    orct2_directory: bpy.props.StringProperty(name="Path:", subtype='FILE_PATH')
+    opengraphics_directory : bpy.props.StringProperty(name="Path:", subtype='FILE_PATH')
 
     def draw(self, context):
         layout = self.layout
-        layout.label(text="Path to the OpenRCT2 objects folder")
-        layout.prop(self, "object_path")
+        layout.label(text="Path to OpenRCT2")
+        layout.prop(self, "orct2_directory")
+        layout.label(text="Path to OpenGraphics")
+        layout.prop(self, "opengraphics_directory")
 
 # register
 ##################################
 
-classes = (GraphicsHelperPanel, Init, RenderTiles, RenderVehicle, GeneralProperties, TilesProperties, VehicleProperties, RCTGraphicsHhelperPreferences)
+classes = (GraphicsHelperPanel, Init, RenderTiles, RenderVehicle, RenderWalls, GeneralProperties, TilesProperties, VehicleProperties, RCTGraphicsHhelperPreferences, WallsProperties)
 def register():
     for cls in classes:
         bpy.utils.register_class(cls)

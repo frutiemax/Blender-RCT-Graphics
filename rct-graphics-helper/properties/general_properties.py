@@ -110,17 +110,17 @@ class GeneralProperties(bpy.types.PropertyGroup):
         description="Whether or not the RCT add-on is currently rendering.",
         default=False)
 
-    build_gx = bpy.props.BoolProperty(
+    build_gx : bpy.props.BoolProperty(
         name="Generate GX (optimized sprite file)",
         description="Whether or not to create a .dat sprite file.",
         default=True)
 
-    build_assetpack = bpy.props.BoolProperty(
+    build_assetpack : bpy.props.BoolProperty(
         name="Generate the asset pack file",
         description="Whether or not to the ORCT2 asset pack file",
         default=True)
 
-    copy_assetpack_to_orct2 = bpy.props.BoolProperty(
+    copy_assetpack_to_orct2 : bpy.props.BoolProperty(
         name="Copy to OpenRCT2",
         description="Copy the generated .graphics file to the ORCT2 assetpack folder.",
         default=False)
