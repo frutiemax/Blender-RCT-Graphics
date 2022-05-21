@@ -12,6 +12,7 @@ import traceback
 from .properties.preferences import RCTGraphicsHelperPreferences
 from .properties.vehicle_properties import register_vehicles_properties, unregister_vehicles_properties
 from .properties.tiles_properties import register_tiles_properties, unregister_tiles_properties
+from .properties.walls_properties import register_walls_properties, unregister_walls_properties
 from .properties.general_properties import register_general_properties, unregister_general_properties
 
 from .rct_graphics_helper_panel import GraphicsHelperPanel
@@ -63,6 +64,7 @@ def register():
     register_general_properties()
     register_tiles_properties()
     register_vehicles_properties()
+    register_walls_properties()
 
     print("Registered {} with {} modules".format(
         bl_info["name"], len(modules)))
@@ -72,6 +74,7 @@ def unregister():
     unregister_general_properties()
     unregister_tiles_properties()
     unregister_vehicles_properties()
+    unregister_walls_properties()
 
     for cls in reversed(classes):
         bpy.utils.unregister_class(cls)

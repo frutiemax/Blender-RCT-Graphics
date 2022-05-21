@@ -21,6 +21,14 @@ class RCTGraphicsHelperPreferences(AddonPreferences):
         subtype='DIR_PATH',
         default="")
 
+    opengraphics_directory = bpy.props.StringProperty(
+        name="OpenGraphics Repository Path",
+        description="Root directory for the OpenGraphics repository, if available.",
+        maxlen=1024,
+        subtype='DIR_PATH',
+        default="")
+
     def draw(self, context):
         layout = self.layout
-        layout.prop(self, "orct2_object_directory")
+        layout.prop(self, "orct2_directory")
+        layout.prop(self, "opengraphics_directory")
