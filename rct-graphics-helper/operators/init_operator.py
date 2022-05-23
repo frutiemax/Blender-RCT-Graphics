@@ -46,6 +46,8 @@ class Init(bpy.types.Operator):
         # Create render layers
         editor_layer = self.create_render_layer(context, "Editor")
 
+        bpy.data.worlds["World"].node_tree.nodes["Background"].inputs[0].default_value = (0.299409, 0.299409, 0.299409, 1)
+
         #set visible layers
         #editor_layer.layers = (True, False, False, True, True, True, True, True,
                                #True, True, True, True, True, True, True, True, True, True, True, True)
@@ -65,6 +67,7 @@ class Init(bpy.types.Operator):
             riders_layer.use = False
 
         self.delete_default_render_layer(context)
+        
 
         #set the render engine to cycles as eevee does not support the material index in compositor mode
         context.scene.render.engine = 'CYCLES'
