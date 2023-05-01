@@ -54,4 +54,4 @@ class RenderProcessor(SubProcessor):
             self.renderer.set_override_material(None)
 
             self.renderer.set_animation_frame(frame.animation_frame_index)
-            self.renderer.render(True, callback)
+            self.renderer.render(False, callback)
