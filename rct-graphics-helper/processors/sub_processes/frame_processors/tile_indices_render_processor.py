@@ -46,6 +46,7 @@ class TileIndicesRenderProcessor(SubProcessor):
 
         self.renderer.set_layer(frame.layer)
         self.renderer.set_aa(self.with_anti_aliasing)
+        #self.renderer.set_aa(True)
         self.renderer.set_meta_output_path(
             frame.task.get_temporary_output_folder(), meta_render_output)
 

@@ -102,8 +102,8 @@ class SpriteProcessor(SubProcessor):
 
     def _cleanup(self, task_process_context):
         temp_folder = task_process_context.task.get_temporary_output_folder()
-        if os.path.exists(temp_folder):
-            shutil.rmtree(temp_folder)
+        #if os.path.exists(temp_folder):
+            #shutil.rmtree(temp_folder)
 
     def _get_progress(self, task_process_context):
         total = len(task_process_context.task.frames) * len(self.processes)

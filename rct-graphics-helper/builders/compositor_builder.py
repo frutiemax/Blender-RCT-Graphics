@@ -113,7 +113,7 @@ class CompositorBuilder(NodesBuilder):
         map_range_node.inputs[3].default_value = 0
         map_range_node.inputs[4].default_value = 1
 
-        self.link(layers_node, 3, map_range_node, 0)
+        self.link(layers_node, 4, map_range_node, 0)
 
         map_range_node_blue = self.create_node("CompositorNodeMapRange")
         map_range_node_blue.inputs[1].default_value = 0
@@ -121,7 +121,7 @@ class CompositorBuilder(NodesBuilder):
         map_range_node_blue.inputs[3].default_value = 0
         map_range_node_blue.inputs[4].default_value = 1
 
-        self.link(layers_node, 14, map_range_node_blue, 0)
+        self.link(layers_node, 3, map_range_node_blue, 0)
 
         alpha_convert_node = self.create_node("CompositorNodePremulKey")
         alpha_convert_node.mapping = "PREMUL_TO_STRAIGHT"

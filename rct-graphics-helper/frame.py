@@ -39,7 +39,7 @@ class Frame:
 
         self.use_anti_aliasing = True
         self.anti_alias_with_background = False
-        self.maintain_aliased_silhouette = True
+        self.maintain_aliased_silhouette = False
 
         self.offset_x = 0
         self.offset_y = 0

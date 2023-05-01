@@ -69,6 +69,10 @@ class SceneBuilder:
         # Dome light
         dome_light_obj = self.create_light_dome(context)
 
+        # make sure material and object index passes are on
+        bpy.context.scene.view_layers["Editor"].use_pass_object_index = True
+        bpy.context.scene.view_layers["Editor"].use_pass_material_index = True
+
         scene.collection.objects.link(dome_light_obj)
         dome_light_obj.parent = vertical_joint_obj
 
