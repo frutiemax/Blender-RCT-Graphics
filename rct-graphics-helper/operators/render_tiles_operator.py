@@ -37,6 +37,9 @@ class RenderTiles(RCTRender, bpy.types.Operator):
         self.task_builder.set_size(
             props.object_width, props.object_length)
 
+        self.task_builder.set_x_cuts(props.x_cuts)
+        self.task_builder.set_y_cuts(props.y_cuts)
+
         for animationIndex in range(general_props.number_of_animation_frames):
             self.task_builder.add_viewing_angles(
                 props.viewing_angles, animationIndex)

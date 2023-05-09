@@ -33,6 +33,18 @@ class TilesProperties(bpy.types.PropertyGroup):
         description="Length of the object in tiles. Only used for large scenery",
         default=1,
         min=1)
+    
+    x_cuts : bpy.props.IntProperty(
+        name="2D Frame Cuts (X)",
+        description="Number of 2d frames cuts in the x axis",
+        default=0,
+        min=0)
+    
+    y_cuts : bpy.props.IntProperty(
+        name="2D Frame Cuts (Y)",
+        description="Number of 2d frames cuts in the y axis",
+        default=0,
+        min=0)
 
 
 def register_tiles_properties():

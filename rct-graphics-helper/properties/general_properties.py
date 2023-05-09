@@ -101,7 +101,8 @@ class GeneralProperties(bpy.types.PropertyGroup):
             ("VEHICLE", "Vehicle",
              "Renders a vehicle from the necesssary angles given a set of track ability flags.", 2),
             ("WALLS", "Walls",
-             "Renders a wall piece.", 3)
+             "Renders a wall piece.", 3),
+             ("2D_FRAMES", "2D Frames", "Renders an object by oversizing the output image and cutting it in same-size images", 4)
         )
     )
 

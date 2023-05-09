@@ -115,6 +115,8 @@ class GraphicsHelperPanel(bpy.types.Panel):
             self.draw_vehicle_panel(scene, box)
         elif properties.render_mode == "WALLS":
             self.draw_walls_panel(scene, box)
+        elif properties.render_mode == "2D_FRAMES":
+            self.draw_2d_frames_panel(scene, box)
 
         row = layout.row()
         row.prop(properties, "build_gx")
@@ -198,3 +200,20 @@ class GraphicsHelperPanel(bpy.types.Panel):
         if general_properties.rendering:
             text = "Failed"
         row.operator("render.rct_vehicle", text=text)
+    
+    def draw_2d_frames_panel(self, scene, layout):
+        properties = scene.rct_graphics_helper_static_properties
+        general_properties = scene.rct_graphics_helper_general_properties
+
+        row = layout.row()
+        row.prop(properties, "viewing_angles")
+
+        row = layout.row()
+        row.prop(properties, "x_cuts")
+        row.prop(properties, "y_cuts")
+
+        row = layout.row()
+        text = "Render"
+        if general_properties.rendering:
+            text = "Failed"
+        row.operator("render.rct_static", text=text)

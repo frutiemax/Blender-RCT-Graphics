@@ -28,6 +28,9 @@ class TaskBuilder:
         self.width = 1
         self.length = 1
 
+        self.x_cuts = 0
+        self.y_cuts = 0
+
         self.use_anti_aliasing = True
         self.anti_alias_with_background = False
         self.maintain_aliased_silhouette = True
@@ -67,6 +70,9 @@ class TaskBuilder:
                               self.bank_angle, self.vertical_angle, self.mid_angle)
                 frame.set_multi_tile_size(self.width, self.length)
 
+                frame.set_x_cuts(self.x_cuts)
+                frame.set_y_cuts(self.y_cuts)
+
                 frame.set_offset(self.offset_x, self.offset_y)
 
                 frame.set_recolorables(self.recolorables)
@@ -92,6 +98,13 @@ class TaskBuilder:
                 if frame.oversized:
                     output_indices = []
                     for k in range(frame.width * frame.length):
+                        output_indices.append(
+                            start_output_index + k * animation_frames * number_of_viewing_angles + j * number_of_viewing_angles + i)
+                    frame.set_output_indices(output_indices)
+                
+                if frame.keep_image_size:
+                    output_indices = []
+                    for k in range((frame.x_cuts + 1) * (frame.y_cuts + 1)):
                         output_indices.append(
                             start_output_index + k * animation_frames * number_of_viewing_angles + j * number_of_viewing_angles + i)
                     frame.set_output_indices(output_indices)
@@ -132,6 +145,12 @@ class TaskBuilder:
     def set_size(self, width, length):
         self.width = width
         self.length = length
+    
+    def set_x_cuts(self, x_cuts):
+        self.x_cuts = x_cuts
+    
+    def set_y_cuts(self, y_cuts):
+        self.y_cuts = y_cuts
 
     # Sets the rotation applied to future render angles
     def set_rotation(self, view_angle, bank_angle=0, vertical_angle=0, mid_angle=0):

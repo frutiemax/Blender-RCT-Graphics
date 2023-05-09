@@ -8,6 +8,28 @@ class MagickCommand(object):
     def __init__(self, input):
         self.full_command = self.__stringify_input(input)
         self.use_repage = False
+    
+    def enable_debug(self):
+        self.full_command = self.full_command + " -debug Exception"
+    
+    def extract(self, rect):
+        left, top, right, bottom = rect
+
+        image_width = right - left
+        image_height = bottom - top
+
+        self.full_command = "( " + self.full_command + " ) " + \
+            " -extract " + str(image_width) + \
+            "x" + str(image_height) + "+" + str(left) + "+" + str(top)
+    
+    def crop(self, rect):
+        left, top, right, bottom = rect
+
+        image_width = right - left
+        image_height = bottom - top
+
+        self.full_command = self.full_command + " -crop " + str(image_width) + "x" + str(image_height)
+        self.full_command = self.full_command + "+" + str(left) + "+" + str(top)
 
     # Replaces the command with a montage command for generating spritesheets
     def as_montage(self, inputs):
@@ -101,9 +123,11 @@ class MagickCommand(object):
     # Gets the cli command to perform the ImageMagick operation
 
     def get_command_string(self, magick_path, output):
+        command = self.full_command
         if self.use_repage:
-            self.full_command = self.full_command + " +repage"
-        final_command = magick_path + " " + self.full_command + " \"" + output + "\""
+            command = self.full_command + " +repage" 
+        
+        final_command = magick_path + " " + command + " \"" + output + "\""
         if os.name == "posix":
             final_command = final_command.replace("(", "\(").replace(")", "\)")
         return final_command

@@ -44,6 +44,10 @@ class Frame:
         self.offset_x = 0
         self.offset_y = 0
 
+        self.x_cuts = 0
+        self.y_cuts = 0
+        self.keep_image_size = False
+
         self.base_palette = None
 
     def get_meta_render_output_path(self, suffix=""):
@@ -67,7 +71,7 @@ class Frame:
         return os.path.join(self.task.get_temporary_output_folder(), "quantized_{}.png".format(self.frame_index))
 
     def get_final_output_paths(self):
-        if self.oversized or self.occlusion_layers > 0:
+        if self.oversized or self.occlusion_layers > 0 or self.keep_image_size:
             output_paths = []
             for output_index in self.output_indices:
                 output_paths.append(os.path.join(
@@ -98,6 +102,18 @@ class Frame:
     def set_offset(self, offset_x, offset_y):
         self.offset_x = offset_x
         self.offset_y = offset_y
+    
+    def set_x_cuts(self, x_cuts):
+        self.x_cuts = x_cuts
+
+        if x_cuts != 0:
+            self.keep_image_size = True
+    
+    def set_y_cuts(self, y_cuts):
+        self.y_cuts = y_cuts
+
+        if y_cuts != 0:
+            self.keep_image_size = True
 
     def set_multi_tile_size(self, width, length):
         self.width = width
@@ -123,6 +139,7 @@ class Frame:
         layers = self.occlusion_layers
         if layers == 0:
             layers = 1
-        if len(self.output_indices) != self.width * self.length * layers:
+        if len(self.output_indices) != self.width * self.length * layers and \
+            len(self.output_indices) != (self.x_cuts + 1) * (self.y_cuts + 1):
             raise Exception(
                 "The number of output indices does not match the number of expected output sprites for this frame")

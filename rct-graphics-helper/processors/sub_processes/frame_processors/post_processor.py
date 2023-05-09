@@ -9,6 +9,8 @@ RCT Graphics Helper is licensed under the GNU General Public License version 3.
 
 import os
 import subprocess
+import bpy
+import math
 from unicodedata import _ucnhash_CAPI
 
 from ....magick_command import MagickCommand
@@ -100,36 +102,46 @@ class PostProcessor(SubProcessor):
         if layers == 0:
             layers = 1
 
-        layer_command = magick_command
+        # get the resolution x, y for the render
+        resolution_x = bpy.context.scene.render.resolution_x
+        resolution_y = bpy.context.scene.render.resolution_y
 
         for i in range(layers):
-            output_index = frame.output_indices[i]
-            output_path = frame.get_final_output_paths()[i]
-
-            if frame.occlusion_layers > 0:
+            for output_index in frame.output_indices:
                 layer_command = magick_command.clone()
+                output_path = frame.get_final_output_paths()[output_index]
 
-                # Mask the occlusion layer
-                mask = MagickCommand(mask_path)
-                mask.nullify_channels(["Red", "Green"])
-                mask.id_mask(0, 0, frame.occlusion_layers - i - 1)
-                layer_command.mask_mix_self(mask)
+                if frame.occlusion_layers > 0:
+                    layer_command = magick_command.clone()
 
-            layer_command.trim()
+                    # Mask the occlusion layer
+                    mask = MagickCommand(mask_path)
+                    mask.nullify_channels(["Red", "Green"])
+                    mask.id_mask(0, 0, frame.occlusion_layers - output_index - 1)
+                    layer_command.mask_mix_self(mask)
 
-            result = str(subprocess.check_output(layer_command.get_command_string(
-                self.renderer.magick_path, output_path), shell=True))
+                rect = self.get_cut_rect(resolution_x, resolution_y, frame.x_cuts, frame.y_cuts, output_index)
+                #layer_command.extract(rect)
+                layer_command.crop(rect)
+                layer_command.trim()
 
-            output_info = self._get_output_info_from_results(
-                result, output_index, output_path)
+                command = layer_command.get_command_string(self.renderer.magick_path, output_path)
+                result = str(subprocess.check_output(command, shell=True))
+                #result = str(subprocess.check_output(layer_command.get_command_string(self.renderer.magick_path, output_path), shell=True))
 
-            output_info.offset_y -= self.renderer.lens_shift_y_offset
-            output_info.offset_y += self.renderer.context.scene.rct_graphics_helper_general_properties.y_offset
+                output_info = self._get_output_info_from_results(result, output_index, output_path)
 
-            output_info.offset_x += frame.offset_x
-            output_info.offset_y += frame.offset_y
+                output_info.offset_y -= self.renderer.lens_shift_y_offset
+                output_info.offset_y += self.renderer.context.scene.rct_graphics_helper_general_properties.y_offset
 
-            frame.task.output_info.append(output_info)
+                output_info.offset_x += frame.offset_x
+                output_info.offset_y += frame.offset_y
+
+                left, top, right, bottom = rect
+                output_info.offset_x += left
+                output_info.offset_y += top
+
+                frame.task.output_info.append(output_info)
 
     def _process_oversized(self, magick_command, frame):
         quantized_output_path = frame.get_quantized_render_output_path()
@@ -192,6 +204,18 @@ class PostProcessor(SubProcessor):
                 output_infos.append(output_info)
 
         frame.task.output_info += output_infos
+
+    def get_cut_rect(self, resolution_x, resolution_y, x_cuts, y_cuts, frame_index):
+        num_rows = y_cuts + 1
+        num_columns = x_cuts + 1
+
+        x_step = int(resolution_x / (x_cuts + 1))
+        y_step = int(resolution_y / (y_cuts + 1))
+
+        x = frame_index % num_columns
+        y = math.floor(frame_index / num_rows)
+
+        return (x * x_step, y * y_step, (x + 1) * x_step, (y + 1) * y_step)
 
     def _get_output_info_from_results(self, result, output_index, output_path):
         output = Output()
