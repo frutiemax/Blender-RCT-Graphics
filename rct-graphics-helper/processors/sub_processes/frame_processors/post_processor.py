@@ -107,9 +107,12 @@ class PostProcessor(SubProcessor):
         resolution_y = bpy.context.scene.render.resolution_y
 
         for i in range(layers):
-            for output_index in frame.output_indices:
+            for j in range(len(frame.output_indices)):
                 layer_command = magick_command.clone()
-                output_path = frame.get_final_output_paths()[output_index]
+                output_index = frame.output_indices[j]
+
+                output_paths = frame.get_final_output_paths()
+                output_path = output_paths[j]
 
                 if frame.occlusion_layers > 0:
                     layer_command = magick_command.clone()
@@ -120,7 +123,7 @@ class PostProcessor(SubProcessor):
                     mask.id_mask(0, 0, frame.occlusion_layers - output_index - 1)
                     layer_command.mask_mix_self(mask)
 
-                rect = self.get_cut_rect(resolution_x, resolution_y, frame.x_cuts, frame.y_cuts, output_index)
+                rect = self.get_cut_rect(resolution_x, resolution_y, frame.x_cuts, frame.y_cuts, j)
                 #layer_command.extract(rect)
                 layer_command.crop(rect)
                 layer_command.trim()
