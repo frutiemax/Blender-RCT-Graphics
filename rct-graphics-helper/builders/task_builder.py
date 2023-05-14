@@ -65,7 +65,7 @@ class TaskBuilder:
             for j in range(animation_frames):
                 angle = 360 / number_of_viewing_angles * i
 
-                frame_index = start_output_index + i * animation_frames + j
+                frame_index = start_output_index + i * animation_frames * ((self.x_cuts+1)*(self.y_cuts+1)) + j
                 frame = Frame(frame_index, self.task, angle + self.view_angle,
                               self.bank_angle, self.vertical_angle, self.mid_angle)
                 frame.set_multi_tile_size(self.width, self.length)
@@ -112,7 +112,7 @@ class TaskBuilder:
                 self.angles.append(frame)
 
         frames = number_of_viewing_angles * \
-            animation_frames * self.width * self.length
+            animation_frames * self.width * self.length * (self.x_cuts+1) * (self.y_cuts+1)
         if self.occlusion_layers > 0:
             frames *= self.occlusion_layers
             

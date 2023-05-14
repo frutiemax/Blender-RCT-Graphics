@@ -209,14 +209,13 @@ class PostProcessor(SubProcessor):
         frame.task.output_info += output_infos
 
     def get_cut_rect(self, resolution_x, resolution_y, x_cuts, y_cuts, frame_index):
-        num_rows = y_cuts + 1
         num_columns = x_cuts + 1
 
         x_step = int(resolution_x / (x_cuts + 1))
         y_step = int(resolution_y / (y_cuts + 1))
 
         x = frame_index % num_columns
-        y = math.floor(frame_index / num_rows)
+        y = math.floor(frame_index / num_columns)
 
         return (x * x_step, y * y_step, (x + 1) * x_step, (y + 1) * y_step)
 

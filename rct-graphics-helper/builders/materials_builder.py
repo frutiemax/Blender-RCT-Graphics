@@ -53,7 +53,7 @@ class MaterialsBuilder(NodesBuilder):
         self.init(material.node_tree)
 
         #input_node = self.create_node("ShaderNodeGeometry")
-        input_node = self.create_node("ShaderNodeObjectInfo")
+        input_node = self.create_node("ShaderNodeNewGeometry")
 
         self.next_column()
 
